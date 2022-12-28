@@ -1,0 +1,32 @@
+﻿[
+    {
+        "Name": "Pasta",
+        "Price": 5
+    },
+    {
+        "Name": "Pizza",
+        "Price": 9
+    },
+    {
+        "Name": "Sushi",
+        "Price": 11
+    },
+    {
+        "Name": "Salad",
+        "Price": 6
+    },
+    {
+        "Name": "Steak",
+        "Price": 15
+    },
+    {
+        "Name": "Soup",
+        "Price": 7
+    },
+    {
+        "Name": "Mollusk",
+        "Price": 15
+    }
+
+
+]

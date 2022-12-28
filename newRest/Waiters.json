@@ -1,0 +1,19 @@
+﻿[
+    {
+        "WaiterId": 1,
+        "Password": "one",
+        "Name": "admin"
+    },
+    {
+        "WaiterId": 2,
+        "Password": "two",
+        "Name": "admin"
+    },
+    {
+        "WaiterId": 3,
+        "Password": "three",
+        "Name": "admin"
+
+    }
+
+]

@@ -1,0 +1,32 @@
+﻿[
+	{
+		"TableId": 2,
+		"NumberOfSeats": 2,
+		"TableState": "available"
+	},
+	{
+		"TableId": 3,
+		"NumberOfSeats": 3,
+		"TableState": "available"
+	},
+	{
+		"TableId": 4,
+		"NumberOfSeats": 4,
+		"TableState": "available"
+	},
+	{
+		"TableId": 5,
+		"NumberOfSeats": 5,
+		"TableState": "available"
+	},
+	{
+		"TableId": 6,
+		"NumberOfSeats": 6,
+		"TableState": "available"
+	},
+	{
+		"TableId": 7,
+		"NumberOfSeats": 6,
+		"TableState": "unavailable"
+	}
+]
