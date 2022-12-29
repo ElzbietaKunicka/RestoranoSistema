@@ -13,9 +13,10 @@ namespace newRest
         
         public DateTime OrderDate { get; set; }
 
-        public Table Table { get; set; }
+        public Table TableId { get; set; }
+        public List<Menu> ItemWithPrice { get; set; }
 
-        public List<Menu> Full { get; set; }
+        //public List<Menu> Full { get; set; }
 
 
 
@@ -25,10 +26,11 @@ namespace newRest
         //   this.DPrice = price;
         //}
 
-        public Order()
-        {
-            Full = new List<Menu>();
-        }
+        //public Order(Table table, List<Menu> full)
+        //{
+        //    this.Table = table;
+        //    Full = new List<Menu>();
+        //}
 
        
     }

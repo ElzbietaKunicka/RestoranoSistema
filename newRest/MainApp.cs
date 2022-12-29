@@ -13,17 +13,16 @@ namespace newRest
 {
     public class MainApp
     {
+        public List<Order> Full { get; set; }
         private readonly IConsole _console;
         private readonly List<Waiter> _list = new List<Waiter>();
         public Waiter _currentLoggedInWaiter;
         static List<Waiter> ReadWaitersData(string path)
-
         {
             string fileContent = File.ReadAllText(path);
             var waitersList = JsonSerializer.Deserialize<List<Waiter>>(fileContent);
             return waitersList;
         }
-
         static List<Table> ReadTablesData(string path)
         {
             string fileContent = File.ReadAllText(path);
@@ -69,75 +68,64 @@ namespace newRest
                 }
             }
             _console.WriteLine($"Blogas slaptazodis!");
-
             return false;
-
         }
-
+       
         public bool ChooseTable()
         {
             var listOfTable = ReadTablesData("./Tables.json");
             _console.WriteLine("Norint pasirinkti staliuka, iveskite zmoniu skaiciu? ");
             var gues = int.Parse(_console.ReadLine());
             var availableTable = listOfTable.Where(table => table.TableState == "available").ToList();
-
             var tinkamasStaliukasID = availableTable.Where(seat => seat.NumberOfSeats >= gues).Select(Table => Table.TableId).ToList();
-            
+            var isrinktasStaliukas = 0;
             
             if (tinkamasStaliukasID.Count == 0)
             {
                 _console.WriteLine("atsiprasome, visi staliukai uzimti");
-                return true;
+               return true;
             };
             _console.WriteLine("pasirinkite staliuko Id");
             tinkamasStaliukasID.ForEach(Console.WriteLine);
             _console.WriteLine("test");
            
-           
             while (true)
             {
                 var userInputChoice = int.Parse(Console.ReadLine());
-
                 switch(userInputChoice) 
                 {
                     case 6:
                         _console.WriteLine("pasirinktas staliukas, kuriuo Id 6,galite kurti uzsakyma");
-                        var orderResultfor6table = CreateOrder(userInputChoice);
+                        var orderResultfor6table = CreateOrder();
                         break;
                     case 5:
                         _console.WriteLine("pasirinktas staliukas, kuriuo Id 5, galite kurti uzsakyma");
-                        var orderResultfor5 = CreateOrder(userInputChoice);
+                        var orderResultfor5 = CreateOrder();
                         break;
                     case 4:
                         var table4 = listOfTable.Single(x => x.TableId == 4);
                         table4.TableState = "unavailbe";
                         _console.WriteLine($"pasirinktas staliukas, kuriuo Id {table4.TableId}, galite kurti uzsakyma");
-                        var orderResultfor4 = CreateOrder(userInputChoice);
+                        isrinktasStaliukas = userInputChoice;
+                        var orderResultfor4 = CreateOrder();
                         break;
                 }
+                return true;
             }
            
             return true;
         }
 
-        public List<Menu> CreateOrder(int tableid)
+        public Order CreateOrder()
         {
-            //_console.WriteLine("pasirinkite norima menu:");
-            //_console.WriteLine("1- dishes");
-            //_console.WriteLine("2- drinks");
-            //_console.WriteLine("3- save");
-
             var listOfDishes = ReadMenuData("./Dishes.json");
-
-            var newOr = new List<string>();
-
             while (true)
             {
                 _console.WriteLine("pasirinkite norima menu:");
                 _console.WriteLine("1- dishes");
                 _console.WriteLine("2- drinks");
                 _console.WriteLine("3- save");
-                var menuInputChoice = int.Parse(Console.ReadLine());
+                var menuInputChoice = int.Parse(_console.ReadLine());
                 
                 switch (menuInputChoice)
                 {
@@ -145,53 +133,46 @@ namespace newRest
                         var dishesName = listOfDishes.Select(dishes => dishes.Name).ToList();
                         _console.WriteLine("pasirinkitie patiekala");
                         dishesName.ForEach(Console.WriteLine);
-                        var inputDishes = (_console.ReadLine()).ToString();
+                       var inputDishes = (_console.ReadLine()).ToString();
                         var item = listOfDishes.Where(d => d.Name == inputDishes).ToList();
                         var dishesPrice = listOfDishes.Select(dishes => dishes.Price).ToList();
 
                         var itemName = item.Select(d => d.Name).ToList();
+                       
                         //itemName.ForEach(Console.WriteLine);
                         var itemPrice = item.Select(d => d.Price).ToList();
                         //itemPrice.ForEach(Console.WriteLine);
 
-                        if (item == null)
+                        if (item.Count == 0)
                         {
-                           _console.WriteLine( "not exist dishes");
-                        }else
+                            _console.WriteLine("not exist dishes");
+                            break;
+                        } 
+                        if(item.Count != 0) 
                         {
+                            //var newOrderTest = new Order
+                            //{
+                            //    ItemWithPrice = new List<Menu>
+                            //    {
+
+                            //    }
+                            //};
                             
-                            
-                            newOr.Add($"Name: {itemName[0]} Price:{itemPrice[0]}");
+
+                            var full = new Order
+                            {
+                                ItemWithPrice = new List<Menu>
+                                {
+                                    new Menu
+                                    {
+                                        Name = itemName[0],
+                                        Price = itemPrice[0],
+                                    }
+                                },
+
+                            };
                             _console.WriteLine($"idetas i uzsakyma: Dishes: {itemName[0]},   Price: {itemPrice[0]} eur");
-
                         }
-
-                        //while (true)
-                        //{
-                        //    var chooseDishes = (_console.ReadLine()).ToString();
-                        //    switch (chooseDishes)
-                        //    {
-                        //        case "Pasta":
-
-                        //            var item = listOfDishes.Where(item => item.DishesName == chooseDishes).ToList();
-                        //            var pastaName = item.Select(x => x.DishesName).ToList();
-                        //            var pastaPrice = item.Select(x => x.Price).ToList();
-
-                        //            var name = pastaName[0];
-                        //            var price = pastaPrice[0];
-                        //            order.Add($"{name}, {price}");
-
-                        //            _console.WriteLine($"idetas i uzsakyma: Dishes: {name},   Price: {price} eur");
-
-
-                        //            break;
-                        //        default:
-                        //            _console.WriteLine("wrong input");
-                        //            break;
-
-                        //    } 
-                        //}
-                        
                         break;
                     case 2:
                         _console.WriteLine("pasirinkitie patiekala");
@@ -202,14 +183,9 @@ namespace newRest
                     default:
                          _console.WriteLine("wrong input");
                          break;
-
                 }
-
             }
-
-            
         }
-
     }
 }
 

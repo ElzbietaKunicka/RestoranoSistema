@@ -12,6 +12,12 @@ namespace newRest
 
         public int Price { get; set; }
 
+        //public Menu(string name, int price)
+        //{
+        //    Name = name;
+        //    Price = price;
+        //}
+
        
 
     }

@@ -15,8 +15,7 @@
             //Console.WriteLine("pasirinkite staliuka ");
             mainApp.ChooseTable();
 
-
-            mainApp.CreateOrder(4);
+            mainApp.CreateOrder();
             
         }
 
