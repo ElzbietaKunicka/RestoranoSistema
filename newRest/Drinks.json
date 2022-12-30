@@ -1,0 +1,26 @@
+﻿[
+    {
+        "Name": "Tea",
+        "Price": 3
+    },
+    {
+        "Name": "Coffee",
+        "Price": 5
+    },
+    {
+        "Name": "Cola",
+        "Price": 3
+    },
+    {
+        "Name": "Juice",
+        "Price": 4
+    },
+    {
+        "Name": "Mojito",
+        "Price": 3
+    },
+    {
+        "Name": "Wine",
+        "Price": 10
+    }
+]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -11,12 +12,25 @@ using System.Xml.Linq;
 
 namespace newRest
 {
-    public class MainApp
+    public class MainApp 
     {
-        public List<Order> Full { get; set; }
+        private readonly List<Table> _listOftable;
+        private readonly List<Menu> _listOfDishes;
+        private readonly List<Menu> _listOfDrinks;
+
+
         private readonly IConsole _console;
         private readonly List<Waiter> _list = new List<Waiter>();
         public Waiter _currentLoggedInWaiter;
+
+        public MainApp(IConsole console)
+        {
+            _console = console;
+            _listOftable = ReadTablesData("./Tables.json");
+            _listOfDishes = ReadMenuData("./Dishes.json");
+            _listOfDrinks = ReadMenuData("./Drinks.json");
+        }
+
         static List<Waiter> ReadWaitersData(string path)
         {
             string fileContent = File.ReadAllText(path);
@@ -33,159 +47,187 @@ namespace newRest
         {
             string fileContent = File.ReadAllText(path);
             var dishesList = JsonSerializer.Deserialize<List<Menu>>(fileContent);
+            
             return dishesList;
         }
-        public MainApp(IConsole console)
-        {
-            _console = console;
-        }
+
 
         public bool Login()
         {
             var result = ReadWaitersData("./Waiters.json");
             _console.WriteLine("Prasau ivesti ID.");
             var inputId = int.Parse(_console.ReadLine());
-            _currentLoggedInWaiter = result.First(waiter => waiter.WaiterId == inputId);
+            _currentLoggedInWaiter = result.SingleOrDefault(waiter => waiter.WaiterId == inputId);
 
-            if(_currentLoggedInWaiter == null)
-            {
-                _console.WriteLine("Netinkamas id");
+           
+                //if (_currentLoggedInWaiter == null)
+                //{
+                //    _console.WriteLine("Netinkamas id");
+                    
+                //}
+            
+                
+                
+                    _console.WriteLine("Prasau ivesti slaptazodi");
+                for (int i = 0; i < 3; i++)
+                {
+                    var password = _console.ReadLine();
+
+                    if (_currentLoggedInWaiter.Password == password)
+                    {
+                        _console.WriteLine($"your ID is - {_currentLoggedInWaiter.WaiterId}");
+                        return true;
+                    }
+                    if (i != 2)
+                    {
+                        _console.WriteLine($"Blogas slaptazodis! Turite {2 - i} meginimus");
+                    }
+                }
+                _console.WriteLine($"Blogas slaptazodis!");
+            
                 return false;
-            }
-            _console.WriteLine("Prasau ivesti slaptazodi");
-            for (int i = 0; i < 3; i++)
-            {
-                var password = _console.ReadLine();
+            
+               //_console.WriteLine($"Blogas slaptazodis!");
+            
 
-                if (_currentLoggedInWaiter.Password == password)
-                {
-                    _console.WriteLine($"your ID is - {_currentLoggedInWaiter.WaiterId}");
-                    return true;
-                }
-                if (i != 2)
-                {
-                    _console.WriteLine($"Blogas slaptazodis! Turite {2 - i} meginimus");
-                }
-            }
-            _console.WriteLine($"Blogas slaptazodis!");
-            return false;
+            
+             
+            //if(_currentLoggedInWaiter == null)
+            //{
+            //    _console.WriteLine("Netinkamas id");
+            //    return false;
+            //}
+            //_console.WriteLine("Prasau ivesti slaptazodi");
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    var password = _console.ReadLine();
+
+            //    if (_currentLoggedInWaiter.Password == password)
+            //    {
+            //        _console.WriteLine($"your ID is - {_currentLoggedInWaiter.WaiterId}");
+            //        return true;
+            //    }
+            //    if (i != 2)
+            //    {
+            //        _console.WriteLine($"Blogas slaptazodis! Turite {2 - i} meginimus");
+            //    }
+            //}
+            //_console.WriteLine($"Blogas slaptazodis!");
+            //return true;
         }
-       
-        public bool ChooseTable()
+      
+        // metodas turi leisti issirinkti staliuka ir ji grazinti. patiekalu uzsakymo ir kitu dalyku cia neturetu vykti
+        public Table ChooseTable()
         {
-            var listOfTable = ReadTablesData("./Tables.json");
             _console.WriteLine("Norint pasirinkti staliuka, iveskite zmoniu skaiciu? ");
             var gues = int.Parse(_console.ReadLine());
-            var availableTable = listOfTable.Where(table => table.TableState == "available").ToList();
+            var availableTable = _listOftable.Where(table => table.TableState == "available").ToList();
             var tinkamasStaliukasID = availableTable.Where(seat => seat.NumberOfSeats >= gues).Select(Table => Table.TableId).ToList();
-            var isrinktasStaliukas = 0;
+            //var isrinktasStaliukas = 0;
             
             if (tinkamasStaliukasID.Count == 0)
             {
                 _console.WriteLine("atsiprasome, visi staliukai uzimti");
-               return true;
+               return null;
             };
-            _console.WriteLine("pasirinkite staliuko Id");
+            _console.WriteLine("please choose TableId");
             tinkamasStaliukasID.ForEach(Console.WriteLine);
             _console.WriteLine("test");
-           
-            while (true)
-            {
-                var userInputChoice = int.Parse(Console.ReadLine());
-                switch(userInputChoice) 
-                {
-                    case 6:
-                        _console.WriteLine("pasirinktas staliukas, kuriuo Id 6,galite kurti uzsakyma");
-                        var orderResultfor6table = CreateOrder();
-                        break;
-                    case 5:
-                        _console.WriteLine("pasirinktas staliukas, kuriuo Id 5, galite kurti uzsakyma");
-                        var orderResultfor5 = CreateOrder();
-                        break;
-                    case 4:
-                        var table4 = listOfTable.Single(x => x.TableId == 4);
-                        table4.TableState = "unavailbe";
-                        _console.WriteLine($"pasirinktas staliukas, kuriuo Id {table4.TableId}, galite kurti uzsakyma");
-                        isrinktasStaliukas = userInputChoice;
-                        var orderResultfor4 = CreateOrder();
-                        break;
-                }
-                return true;
-            }
-           
-            return true;
-        }
+            var userInputChoice = int.Parse(Console.ReadLine());
+            
+            var table = _listOftable.Single(x => x.TableId == userInputChoice);
+            _console.WriteLine($"pasirinkto staliuko ID is {userInputChoice}");
+            table.TableState = "unavailbe";
 
-        public Order CreateOrder()
+            return table;
+        }
+         
+        public List<Menu> ChooseDishes()
         {
-            var listOfDishes = ReadMenuData("./Dishes.json");
+            
+            //var listOfDishes = ReadMenuData("./Dishes.json");
             while (true)
             {
-                _console.WriteLine("pasirinkite norima menu:");
-                _console.WriteLine("1- dishes");
-                _console.WriteLine("2- drinks");
-                _console.WriteLine("3- save");
+                _console.WriteLine("Select the menu of dishes or Drinks");
+                _console.WriteLine("1- dishes menu");
+                _console.WriteLine("2- drinks menu");
+                _console.WriteLine("3- return");
+
                 var menuInputChoice = int.Parse(_console.ReadLine());
                 
                 switch (menuInputChoice)
                 {
                     case 1:
-                        var dishesName = listOfDishes.Select(dishes => dishes.Name).ToList();
-                        _console.WriteLine("pasirinkitie patiekala");
-                        dishesName.ForEach(Console.WriteLine);
-                       var inputDishes = (_console.ReadLine()).ToString();
-                        var item = listOfDishes.Where(d => d.Name == inputDishes).ToList();
-                        var dishesPrice = listOfDishes.Select(dishes => dishes.Price).ToList();
+                        var dishesList = new List<Menu>();
+                        var dishesNames = _listOfDishes.Select(dishes => dishes.Name).ToList();
+                        _console.WriteLine("Please select dish");
+                        dishesNames.ForEach(Console.WriteLine);
+                        var inputDish = (_console.ReadLine()).ToString();
+                        var dish = _listOfDishes.Single(dish => dish.Name == inputDish);
+                        dishesList.Add(dish);
 
-                        var itemName = item.Select(d => d.Name).ToList();
-                       
-                        //itemName.ForEach(Console.WriteLine);
-                        var itemPrice = item.Select(d => d.Price).ToList();
-                        //itemPrice.ForEach(Console.WriteLine);
-
-                        if (item.Count == 0)
+                        if (dish == null)
                         {
-                            _console.WriteLine("not exist dishes");
+                            _console.WriteLine("Dish doesn't exist, PLEASE CHECK AND TRY AGAIN.");
                             break;
                         } 
-                        if(item.Count != 0) 
+                        if(dish != null) 
                         {
-                            //var newOrderTest = new Order
-                            //{
-                            //    ItemWithPrice = new List<Menu>
-                            //    {
-
-                            //    }
-                            //};
-                            
-
-                            var full = new Order
-                            {
-                                ItemWithPrice = new List<Menu>
-                                {
-                                    new Menu
-                                    {
-                                        Name = itemName[0],
-                                        Price = itemPrice[0],
-                                    }
-                                },
-
-                            };
-                            _console.WriteLine($"idetas i uzsakyma: Dishes: {itemName[0]},   Price: {itemPrice[0]} eur");
+                            //var dish = _listOfDishes.Single(x => x.Name == inputDishes);
+                           _console.WriteLine($"Dish has been added. Dish: {dish.Name},   Price: {dish.Price} eur");
+                           return dishesList;
                         }
                         break;
                     case 2:
-                        _console.WriteLine("pasirinkitie patiekala");
+                        var drinkList = new List<Menu>();
+                         var drinksNames = _listOfDrinks.Select(drink => drink.Name).ToList();
+                        _console.WriteLine("Please select drink");
+                        drinksNames.ForEach(Console.WriteLine);
+                        var inputDrink = (_console.ReadLine()).ToString();
+                        var drink = _listOfDrinks.Single(drink => drink.Name == inputDrink);
+                        drinkList.Add(drink);
+                        if (drink == null)
+                        {
+                            _console.WriteLine("Drink doesn't exist, PLEASE CHECK AND TRY AGAIN.");
+                            break;
+                        }
+                        if (drink != null)
+                        {
+                            //var drink = _listOfDishes.Single(x => x.Name == inputDishes);
+                            _console.WriteLine($"Drink has been added. Drink: {drink.Name},   Price: {drink.Price} eur");
+                            return drinkList;
+                        }
+                        
                         break;
-                        case 3:
-                        _console.WriteLine("logout");
-                        break;
+                    case 3:
+                    
+                       return new List<Menu>();
+                        
                     default:
-                         _console.WriteLine("wrong input");
+                         _console.WriteLine("PLEASE CHECK AND TRY AGAIN.");
                          break;
                 }
+            return new List<Menu>();
             }
         }
+
+        public int CountTotalOrderAmount()
+        {
+            //var newOrder = new Order();
+            //var table = mainApp.ChooseTable();
+            //newOrder.TableId = table;
+
+            var total = new Menu();
+            var ChooseDishesPrice = ChooseDishes();
+            var inttt = total.Price;
+            var sum = inttt;
+
+            var prices = _listOfDrinks.Select(drink => drink.Name).ToList();
+            return sum;
+        }
+        
+
+
     }
 }
 

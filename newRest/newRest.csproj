@@ -11,6 +11,9 @@
     <None Update="Dishes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Drinks.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Tables.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

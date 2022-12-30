@@ -14,24 +14,9 @@ namespace newRest
         public DateTime OrderDate { get; set; }
 
         public Table TableId { get; set; }
-        public List<Menu> ItemWithPrice { get; set; }
+        public Table NumberOfSeats { get; set; }
+        public List<Menu> MenuItemWithPrice { get; set; } = new List<Menu>();
+        public int TotalOrderAmount { get; set; }
 
-        //public List<Menu> Full { get; set; }
-
-
-
-        //public Order(string name, int price)
-        //{
-        //   this.DName = name;
-        //   this.DPrice = price;
-        //}
-
-        //public Order(Table table, List<Menu> full)
-        //{
-        //    this.Table = table;
-        //    Full = new List<Menu>();
-        //}
-
-       
     }
 }

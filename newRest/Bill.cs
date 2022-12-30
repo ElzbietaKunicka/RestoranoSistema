@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace newRest
 {
-    public class Menu
+    public class Bill
     {
-        public string Name { get; set; }
-
-        public int Price { get; set; }
-
+        public Order Order { get; set; }
+        public List<string> Print { get; set; }
     }
 }
