@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace newRest
 {
@@ -9,44 +10,63 @@ namespace newRest
             
             var customConsole = new CustomConsole();
             var mainApp = new MainApp(customConsole);
-            //while (true)
-            //{
-            //   mainApp.Login();
-              
-            //}
-            
-            //var total = mainApp.CountTotalOrderAmount();
-            mainApp.Login();
-
-
-            var newOrder = new Order();
-            var table = mainApp.ChooseTable();
-            newOrder.TableId = table;
-            //var newDish = mainApp.ChooseDishes();
-            //newOrder.ItemWithPrice = newDish;
-            
-            while (true)
+           if (true)
             {
-                var newDish = mainApp.ChooseDishes();
-                newOrder.MenuItemWithPrice.AddRange(newDish);
-                if(newDish.Count == 0)
+              var apLog = mainApp.Login();
+                if(apLog == false)
                 {
                     return;
                 }
-                //mainApp.ChooseDishes();
             }
+            
             //var total = mainApp.CountTotalOrderAmount();
-            //newOrder.TotalOrderAmount = total;
+           
+            var newOrder = new Order();
+            var table = mainApp.ChooseTable();
+            if(table.TableId == 0)
+            {
+                return;
+            }
+            if(table.TableId != 0)
+            {
+                newOrder.Table = table;
+                //newOrder.TableId = table; change name
+                newOrder.OrderDate = DateTime.Now;
+                while (true)
+                {
+                    var newDish = mainApp.ChooseDishes();
+                    newOrder.MenuItemWithPrice.AddRange(newDish);
 
-
-            //newDish.ItemWithPrice = dish;
-
+                    var totalPrice = newOrder.MenuItemWithPrice.Select(x => x.Price).Sum();
+                    
+                    //mainApp.TableInfo.TotalOrderAmount = newOrder.MenuItemWithPrice.Select(x => x.Price).Sum();
+                    Console.WriteLine($"Tolal price is : {totalPrice}");
+                   
+                    if (newDish.Count == 0)
+                    {
+                        
+                        mainApp.OrderInfo = newOrder.MenuItemWithPrice;
+                        mainApp.TableInfo = newOrder.Table;
+                        mainApp.Data = newOrder.OrderDate;
+                        mainApp.ShowOrderDetails();
+                        var ReturnOnMenuOrPaid = mainApp.ChooseComandReturnOrPaid();
+                        
+                        if (ReturnOnMenuOrPaid == 2)
+                        {
+                            
+                            var bill = new BillForUser();
+                            bill.BillOrderInfo = newOrder.MenuItemWithPrice;
+                            bill.BillData = newOrder.OrderDate;
+                            bill.PrintBill();
+                            
+                            return;
+                            
+                        }
+                    }
+                }
+            }
             
             
-
-
-
         }
-
     }
 }

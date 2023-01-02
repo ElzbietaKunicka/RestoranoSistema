@@ -12,7 +12,7 @@ namespace newRest
         public int NumberOfSeats { get; set; }
         public string TableState { get; set; }
 
-        public List<Order> OrderHistory { get; set; }
+       
 
         //public Table(int tableId, int numberOfSeats)
         //{
