@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace newRest
+namespace NewRestoranoSistema
 {
     public class MainApp 
     {
@@ -19,15 +19,9 @@ namespace newRest
         private readonly List<Menu> _listOfDishes;
         private readonly List<Menu> _listOfDrinks;
         private readonly List<Waiter> _listOfWaiters = new List<Waiter>();
-
         private readonly IConsole _console;
        
         public Waiter _currentLoggedInWaiter;
-
-        //public  List<Menu> FullOrder { get; set; }
-        //public int Total { get; set; }
-       
-        //public int NumberOfSeats { get; set; }
         public List<Menu> OrderInfo { get; set; }
         public Table TableInfo { get; set; }
         public DateTime Data { get; set; }
@@ -64,7 +58,7 @@ namespace newRest
         public bool Login()
         {
             _console.WriteLine("Please enter ID");
-            var inputId = int.Parse(_console.ReadLine());
+            var inputId = _console.ReadNumber();
             _currentLoggedInWaiter = _listOfWaiters.SingleOrDefault(waiter => waiter.WaiterId == inputId);
             while (true)
             {
@@ -74,7 +68,7 @@ namespace newRest
                     while (_currentLoggedInWaiter == null)
                     {
                         _console.WriteLine("Please enter ID");
-                        var newInputId = int.Parse(_console.ReadLine());
+                        var newInputId = (_console.ReadNumber());
                         _currentLoggedInWaiter = _listOfWaiters.SingleOrDefault(waiter => waiter.WaiterId == newInputId);
                     }
                 }
@@ -85,7 +79,7 @@ namespace newRest
                     {
                         for (int i = 0; i < 3; i++)
                         {
-                            var password = _console.ReadLine();
+                            var password = _console.ReadString();
 
                             if (_currentLoggedInWaiter.Password == password)
                             {
@@ -97,7 +91,7 @@ namespace newRest
                                 _console.WriteLine($"Incorrect password! You have {2 - i} attempts left");
                             }
                         }
-                        _console.WriteLine($"Incorrect WaiterID or password. Try signing in again.");
+                        _console.WriteLine("Incorrect WaiterID or password. Try signing in again.");
                         return false;
                     }
                 }
@@ -107,21 +101,20 @@ namespace newRest
         public Table ChooseTable()
         {
             _console.WriteLine("Please enter number of guests!");
-            var numberOfGuests = int.Parse(_console.ReadLine());
-            var availableTable = _listOftable.Where(table => table.TableState == "available").ToList();
-            var tinkamasStaliukas = availableTable.Where(seat => seat.NumberOfSeats >= numberOfGuests).ToList();
-            var tinkamasStaliukasID = availableTable.Where(seat => seat.NumberOfSeats >= numberOfGuests).Select(table => table.TableId).ToList();
-            //var isrinktasStaliukas = 0;
+            var numberOfGuests = _console.ReadNumber();
+            var availableTableList = _listOftable.Where(table => table.TableState == "available").ToList();
+            var tinkamasStaliukas = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).ToList();
+            var tinkamasStaliukasID = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).Select(table => table.TableId).ToList();
+            
             if (tinkamasStaliukasID.Count == 0)
             {
-                var newTest = new Table();
+                var availableTable = new Table();
                 _console.WriteLine($"Sorry, we don't currently have any tables available for {numberOfGuests}");
-                return newTest;
+                return availableTable;
             }
                 _console.WriteLine("Please select table ID.");
-               tinkamasStaliukasID.ForEach(Console.WriteLine);
-                _console.WriteLine("  ");
-                int userInputChoice = int.Parse(_console.ReadLine());
+               tinkamasStaliukasID.ForEach(_console.WriteNumber);
+                int userInputChoice =_console.ReadNumber();
                 var table = tinkamasStaliukas.SingleOrDefault(x => x.TableId == userInputChoice);
             if (table == null)
             {
@@ -130,7 +123,7 @@ namespace newRest
                 {
                     _console.WriteLine("Wrong input");
                     _console.WriteLine("Please check your input and select table ID again.");
-                    int newUserInputChoice = int.Parse(_console.ReadLine());
+                    int newUserInputChoice = _console.ReadNumber();
                     table = tinkamasStaliukas.SingleOrDefault(x => x.TableId == newUserInputChoice);
                     if (table != null)
                     {
@@ -165,7 +158,7 @@ namespace newRest
                 var drinkList = new List<Menu>();
                 var dishesList = new List<Menu>();
 
-                var menuInputChoice = int.Parse(_console.ReadLine());
+                var menuInputChoice = _console.ReadNumber();
                 
                 switch (menuInputChoice)
                 {
@@ -173,45 +166,64 @@ namespace newRest
                         //var dishesList = new List<Menu>();
                         var dishesNames = _listOfDishes.Select(dishes => dishes.Name).ToList();
                         _console.WriteLine("Please select dish");
-                        dishesNames.ForEach(Console.WriteLine);
-                        var inputDish = (_console.ReadLine()).ToString();
-                        var dish = _listOfDishes.Single(dish => dish.Name == inputDish);
-                        dishesList.Add(dish);
+                        dishesNames.ForEach(_console.WriteLine);
+                        var inputDish = _console.ReadString();
+                        var dish = _listOfDishes.SingleOrDefault(dish => dish.Name == inputDish);
 
-                        if (dish == null)
+                        //dishesList.Add(dish);
+                        while (true)
                         {
-                            _console.WriteLine("Dish doesn't exist, PLEASE CHECK AND TRY AGAIN.");
-                            break;
-                        } 
-                        if(dish != null) 
-                        {
-                            //var dish = _listOfDishes.Single(x => x.Name == inputDishes);
-                           _console.WriteLine($"Dish has been added. Dish: {dish.Name},   Price: {dish.Price}eur");
-                           return dishesList;
+                            if (dish == null)
+                            {
+                                _console.WriteLine("The dish does not exist.");
+                                while (dish == null)
+                                {
+                                    _console.WriteLine("Please enter dish Name again");
+                                    var newInputDish = (_console.ReadString());
+                                    dish = _listOfDishes.SingleOrDefault(waiter => waiter.Name == newInputDish);
+                                }
+                            }
+                            if (dish != null)
+                            {
+                                //var dish = _listOfDishes.SingleOrDefault(x => x.Name == inputDishes);
+                                _console.WriteLine($"Dish has been added. Dish: {dish.Name},   Price: {dish.Price}eur");
+                                dishesList.Add(dish);
+                                return dishesList;
+                            }
                         }
                         break;
+                       
                     case 2:
                         //var drinkList = new List<Menu>();
                          var drinksNames = _listOfDrinks.Select(drink => drink.Name).ToList();
                         _console.WriteLine("Please select drink");
-                        drinksNames.ForEach(Console.WriteLine);
-                        var inputDrink = (_console.ReadLine()).ToString();
-                        var drink = _listOfDrinks.Single(drink => drink.Name == inputDrink);
-                        drinkList.Add(drink);
-                        
-                        if (drink == null)
+                        drinksNames.ForEach(_console.WriteLine);
+                        var inputDrinkName = _console.ReadString();
+                        var drink = _listOfDrinks.SingleOrDefault(drink => drink.Name == inputDrinkName);
+                        //drinkList.Add(drink);
+                        while (true)
                         {
-                            _console.WriteLine("Drink doesn't exist, PLEASE CHECK AND TRY AGAIN.");
-                            break;
-                        }
-                        if (drink != null)
-                        {
-                            //var drink = _listOfDishes.Single(x => x.Name == inputDishes);
-                            _console.WriteLine($"Drink has been added. Drink: {drink.Name},   Price: {drink.Price}eur");
-                            
-                            return drinkList;
+                            if (drink == null)
+                            {
+                                _console.WriteLine("Drink doesn't exist, PLEASE CHECK AND TRY AGAIN.");
+                                while (drink == null)
+                                {
+                                    _console.WriteLine("Please enter drink name again");
+                                    var newInputDrinkName = (_console.ReadString());
+                                    drink = _listOfDrinks.SingleOrDefault(drink => drink.Name == newInputDrinkName);
+                                }
+                               
+                            }
+                            if (drink != null)
+                            {
+                                //var dish = _listOfDishes.Single(x => x.Name == inputDishes);
+                                _console.WriteLine($"Drink has been added. Drink: {drink.Name},   Price: {drink.Price}eur");
+                                drinkList.Add(drink);
+                                return drinkList;
+                            }
                         }
                         break;
+
                     case 3:
                         var result = new List<Menu>();
                         return result;
@@ -225,32 +237,25 @@ namespace newRest
         }
         public void ShowOrderDetails()
         {
-            _console.WriteLine("");
-            Console.WriteLine($"Order details:");
+            _console.WriteLine($" \n Order details:");
             var items = OrderInfo;
             var counter = 1;
             var total = items.Select(item => item.Price).Sum();
-            _console.WriteLine(" ");
-           _console.WriteLine($" Table ID: {TableInfo.TableId}, NumberOfSeats: {TableInfo.NumberOfSeats} seats.");
-            _console.WriteLine(" ");
+           _console.WriteLine($" Table ID: {TableInfo.TableId}, \n NumberOfSeats: {TableInfo.NumberOfSeats} seats.");
             foreach (var item in items)
             {
-                _console.WriteLine($"   {counter++}.{item.Name}   {item.Price}eur.");
-
+                _console.WriteLine($"\t {counter++}.{item.Name}  \t{item.Price}eur.");
             }
-            _console.WriteLine($"The order total amount is {total} eur.");
-            _console.WriteLine("");
-            _console.WriteLine($"Order date: {Data}");
-
+            _console.WriteLine($"The order total amount = {total} eur.");
+            _console.WriteLine($"Order date: {Data} \n");
             return;
         }
 
-        public int ChooseComandReturnOrPaid()
+        public int SelectCommandReturnToTheMenuOrToPay()
         {
-            Console.WriteLine(" 1 - Back to the main menu");
-            Console.WriteLine(" 2 - To pay.");
-
-            var output = int.Parse(_console.ReadLine());
+            _console.WriteLine("Please select command: \n 1 - Back to the main menu \n 2 - To pay.");
+           
+            var output = _console.ReadNumber();
             if (output == 1)
             {
                 var newDish = ChooseDishes();
@@ -259,15 +264,46 @@ namespace newRest
             }
             if (output == 2)
             {
-                _console.WriteLine("Apmokejimui reikalingas bill");
                 return output;
             }
             return output;
-            
+        }
+
+        public int SelectCommandToPrintBillOrNoForCustomers()
+        {
+            _console.WriteLine("Select command:\n 1.Print a customer and restaurant bills \n 2.Print a Restaurant bill ");
+            var output = _console.ReadNumber();
+            if (output != 1 && output != 2)
+            {
+                _console.WriteLine("Wrong input, try again");
+                output = _console.ReadNumber();
+                if (output == 1)
+                {
+                    return output;
+                }
+                if (output == 2)
+                {
+                    return output;
+                }
+            }
+            if (output == 1)
+            {
+               return output;
+            }
+            if(output == 2)
+            {
+                return output;
+            }
+            return output;
+        }
+
+        public string CheckUnavailableTable()
+        {
+           TableInfo.TableState = "available";
+           return TableInfo.TableState = $"\nTable ID - {TableInfo.TableId} is available!!!";
         }
 
         
-
         
     }
 }

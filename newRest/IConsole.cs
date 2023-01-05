@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace newRest
+namespace NewRestoranoSistema
 {
     public interface IConsole
     {
         public void WriteLine(string value);
+        public void WriteNumber(int value);
 
-        public string ReadLine();
+        public string ReadString();
+        public int ReadNumber();
     }
 }

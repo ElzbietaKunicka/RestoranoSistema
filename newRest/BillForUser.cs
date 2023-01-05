@@ -4,32 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace newRest
+namespace NewRestoranoSistema
 {
-    public class BillForUser : Billabstract
+    public class BillForUser : Billabstract, ISendEmail
     {
-        public List<Menu> BillOrderInfo { get; set; }
-        public Table BillTableInfo { get; set; }
-        public DateTime BillData { get; set; }
+        public string SenderName = "RestaurantCity";
 
-       
-
-        public override void PrintBill()
+        public string SendEmail(Billabstract bill)
         {
-            var items = BillOrderInfo;
+            Console.WriteLine("\nPlease enter email");
+            var recipientEmail = (Console.ReadLine().ToString());
             var counter = 1;
-            //var total = items.Select(item => item.Price).Sum();
-            Console.WriteLine(" ");
-            //_console.WriteLine($" Table ID: {TableInfo.TableId}, NumberOfSeats: {TableInfo.NumberOfSeats} seats.");
-            Console.WriteLine(" ");
-            foreach (var item in items)
+            var total = BillOrderInfo.Select(item => item.Price).Sum();
+            Console.WriteLine($"\nOrder date: \t {BillData}");
+            Console.Write($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            Console.WriteLine($"Order item:");
+            foreach (var item in BillOrderInfo)
             {
-                Console.WriteLine($"   {counter++}.{item.Name}   {item.Price}eur.");
-
+                Console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
             }
-            //Console.WriteLine($"The order total amount is {total} eur.");
-            //_console.WriteLine("");
-            Console.WriteLine($"Order date: {BillData}"); 
+            Console.WriteLine($"The order total amount = {total}Eur.");
+            return $" email has been successfully sent to: {recipientEmail}";
         }
     }
+    
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace newRest
+namespace NewRestoranoSistema
 {
     public class Waiter
     {

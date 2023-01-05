@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace NewRestoranoSistema
 {
-    public class Menu
+    public class DataBase
     {
-        public string Name { get; set; }
-
-        public int Price { get; set; }
-
     }
 }

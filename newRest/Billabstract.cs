@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace newRest
+namespace NewRestoranoSistema
 {
     public abstract class Billabstract
     {
@@ -13,6 +13,20 @@ namespace newRest
         public Table BillTableInfo { get; set; }
         public DateTime BillData { get; set; }
 
-        public abstract void PrintBill();
+        public string PrintBill()
+        {
+            Console.WriteLine("\nPrinting:\n");
+            var counter = 1;
+            var total = BillOrderInfo.Select(item => item.Price).Sum();
+            Console.WriteLine($"Order date: \t {BillData}");
+            Console.Write($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            Console.WriteLine($"Order item:");
+            foreach (var item in BillOrderInfo)
+            {
+                Console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
+            }
+            Console.WriteLine($"The order total amount = {total}Eur.");
+            return "d";
+        }
     }
 }
