@@ -232,7 +232,6 @@ namespace NewRestoranoSistema
                          _console.WriteLine("PLEASE CHECK AND TRY AGAIN.");
                          break;
                 }
-            //return new List<Menu>();
             }
         }
         public void ShowOrderDetails()
@@ -300,7 +299,7 @@ namespace NewRestoranoSistema
         public string CheckUnavailableTable()
         {
            TableInfo.TableState = "available";
-           return TableInfo.TableState = $"\nTable ID - {TableInfo.TableId} is available!!!";
+           return TableInfo.TableState = $"\n...Table ID - {TableInfo.TableId} is available!!!";
         }
 
         

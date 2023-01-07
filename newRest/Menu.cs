@@ -12,5 +12,9 @@ namespace NewRestoranoSistema
 
         public int Price { get; set; }
 
+        public static implicit operator List<object>(Menu v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

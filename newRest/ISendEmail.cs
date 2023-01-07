@@ -13,7 +13,7 @@ namespace NewRestoranoSistema
         //public string SenderEmail { get { return "sdfg.mail.com"; } set { } }
      
 
-        string SendEmail(Billabstract bill);
+        string SendEmail();
         
     }
 }

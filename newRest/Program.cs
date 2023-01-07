@@ -14,8 +14,8 @@ namespace NewRestoranoSistema
                 var mainApp = new MainApp(customConsole);
                 if (true)
                 {
-                    var apLog = mainApp.Login();
-                    if (apLog == false)
+                    var appLogIn = mainApp.Login();
+                    if (appLogIn == false)
                     {
                         return;
                     }
@@ -48,19 +48,19 @@ namespace NewRestoranoSistema
                             mainApp.Data = newOrder.OrderDate;
                             mainApp.ShowOrderDetails();
 
-                            var ReturnOnMenuOrPaid = mainApp.SelectCommandReturnToTheMenuOrToPay();
-                            if (ReturnOnMenuOrPaid == 2)
+                            var returnOnMenuOrPaid = mainApp.SelectCommandReturnToTheMenuOrToPay();
+                            if (returnOnMenuOrPaid == 2)
                             {
-                                var bill = new BillForUser();
+                                var bill = new BillForCustomer(customConsole);
                                 bill.BillTableInfo = newOrder.Table;
                                 bill.BillOrderInfo = newOrder.MenuItemWithPrice;
                                 bill.BillData = newOrder.OrderDate;
-                                var ReturnOutputPrintBillOrNoForGuests = mainApp.SelectCommandToPrintBillOrNoForCustomers();
-                                var billForRestaurant = new BillForRestaurant();
+                                var returnOutputPrintBillOrNoForGuests = mainApp.SelectCommandToPrintBillOrNoForCustomers();
+                                var billForRestaurant = new BillForRestaurant(customConsole);
                                 billForRestaurant.BillTableInfo = newOrder.Table;
                                 billForRestaurant.BillOrderInfo = newOrder.MenuItemWithPrice;
                                 billForRestaurant.BillData = newOrder.OrderDate;
-                                if (ReturnOutputPrintBillOrNoForGuests == 1)
+                                if (returnOutputPrintBillOrNoForGuests == 1)
                                 {
                                     bill.PrintBill();
                                 }
@@ -70,8 +70,9 @@ namespace NewRestoranoSistema
                                 var ta = mainApp.TableInfo.TableState;
                                 Console.WriteLine(ta);
 
-                                billForRestaurant.SendEmail(bill);
-                                bill.SendEmail(bill);
+                                billForRestaurant.SendEmail();
+                                bill.SendEmail();
+                                //bill.SendEmail(bill);
                                
                                 
                                 return;

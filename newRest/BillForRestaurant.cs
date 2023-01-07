@@ -8,38 +8,39 @@ using System.Threading.Tasks;
 
 namespace NewRestoranoSistema
 {
-    public class BillForRestaurant : Billabstract, ISendEmail
+    public class BillForRestaurant : BillAbstract, ISendEmail
     {
+        private readonly IConsole _console;
         public string SenderName = "RestaurantCity";
+        public string RecipientEmail { get; set; }
         public string _invoice { get; set; }
       
-        
-        
-
+        public BillForRestaurant(IConsole console)
+        {
+            _console = console;
+        }
         public string PrintBill()
         {
-            Console.WriteLine("\nPrinting:\n");
+            _console.WriteLine("\nPrinting Bill For Restaurant:\n");
             var items = BillOrderInfo;
             var counter = 1;
             var tableInfo = BillTableInfo;
             var total = items.Select(item => item.Price).Sum();
-            Console.WriteLine($"Invoice:\t{GenerateInvoiceNumber()}.");
-            Console.WriteLine($"Order date: \t {BillData}");
-            Console.Write($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
-            Console.WriteLine($"Order item:");
+            _console.WriteLine($"Invoice:\t{GenerateInvoiceNumber()}.");
+            _console.WriteLine($"Order date: \t {BillData}");
+            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            _console.WriteLine($"Order item:");
             foreach (var item in items)
             {
-                Console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
+                _console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
             }
-            Console.WriteLine($"The order total amount = {total}Eur.");
+            _console.WriteLine($"The order total amount = {total}Eur.");
             double vat = Convert.ToDouble(total) * 21 / 100;
-            Console.WriteLine($"Vat: {vat}eur");
-            Console.WriteLine("Paid");
-            //Save();
-            return "save in file";
+            _console.WriteLine($"Vat: {vat}eur");
+            _console.WriteLine("Payment is successful");
+            return "Payment is successful\n";
         }
         
-
         public string GenerateInvoiceNumber()
         {
             var rnd = new Random().Next(1, 50).ToString();
@@ -50,35 +51,33 @@ namespace NewRestoranoSistema
         }
         public string Save() 
         {
+            _console.WriteLine("...Bill information Save in file");
             string json = JsonSerializer.Serialize(this);
             //File.WriteAllText("dataa.txt", json);
             File.AppendAllText("dataa.txt", json);
-            return "save";
+            
+            return "Save in file";
         }
 
-        
-
-        public string SendEmail(Billabstract bill)
+        public string SendEmail()
         {
-            Console.WriteLine("\nPlease enter email");
-            var recipientEmail = (Console.ReadLine().ToString());
+            _console.WriteLine("\nPlease enter email to send Restaurant Bill");
+            var recipientEmail = _console.ReadString();
             var counter = 1;
             var total = BillOrderInfo.Select(item => item.Price).Sum();
-            Console.WriteLine($"\nInvoice:\t{GenerateInvoiceNumber()}.");
-            Console.WriteLine($"Order date: \t {BillData}");
-            Console.Write($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
-            Console.WriteLine($"Order item:");
+            _console.WriteLine($"\nInvoice:\t{GenerateInvoiceNumber()}.");
+            _console.WriteLine($"Order date: \t {BillData}");
+            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            _console.WriteLine($"Order item:");
             foreach (var item in BillOrderInfo)
             {
-                Console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
+                _console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
             }
-            Console.WriteLine($"The order total amount = {total}Eur.");
+            _console.WriteLine($"The order total amount = {total}Eur.");
             double vat = Convert.ToDouble(total) * 21 / 100;
-            Console.WriteLine($"Vat: {vat}eur");
+            _console.WriteLine($"Vat: {vat}eur");
 
-
-
-            return $" email has been successfully sent to: {recipientEmail}";
+            return $"Subject: Restaurant Bill\n \tEmail has been successfully sent to: {recipientEmail}";
         }
     }
 }
