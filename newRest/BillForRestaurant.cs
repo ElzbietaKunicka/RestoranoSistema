@@ -11,9 +11,7 @@ namespace NewRestoranoSistema
     public class BillForRestaurant : Bill, ISendEmail
     {
         private readonly IConsole _console;
-        
         public string _invoice { get; set; }
-      
         public BillForRestaurant(IConsole console)
         {
             _console = console;
@@ -42,7 +40,6 @@ namespace NewRestoranoSistema
             _console.WriteLine("_____________________________________");
             return "Payment is successful";
         }
-        
         public string GenerateInvoiceNumber()
         {
             var rnd = new Random().Next(1, 50).ToString();
@@ -58,7 +55,6 @@ namespace NewRestoranoSistema
             File.AppendAllText("dataa.txt", json);
             return "Saved in file";
         }
-
         public string SendEmail()
         {
             _console.WriteLine("\nPlease enter email (Restaurant Bill)");

@@ -9,7 +9,6 @@ namespace NewRestoranoSistema
     public class CustomConsole : IConsole
     {
         public string ReadString() => Console.ReadLine();
-
         public int ReadNumber()
         {
             var userInput = Console.ReadLine();
@@ -26,7 +25,6 @@ namespace NewRestoranoSistema
         }
 
         public void WriteLine(string value) => Console.WriteLine(value);
-
         public void WriteNumber(int value) => Console.WriteLine(value);
     }
 }

@@ -12,7 +12,6 @@ namespace NewRestoranoSistema
         {
             _console = console;
         }
-
         public string SendEmail()
         {
             _console.WriteLine("\nPlease enter email");

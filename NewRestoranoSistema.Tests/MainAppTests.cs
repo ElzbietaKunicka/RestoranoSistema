@@ -49,9 +49,7 @@ namespace NewRestoranoSistema.Tests
         {
             // Arrange
             var testConsole = new TestConsole();
-            var mainApp = new MainApp(testConsole)
-            {
-            };
+            var mainApp = new MainApp(testConsole);
             testConsole.ReadNumbersList.Add(4); // num of guests
             testConsole.ReadNumbersList.Add(6); // select table id
             // Act
@@ -90,13 +88,14 @@ namespace NewRestoranoSistema.Tests
         [TestMethod]
         public void ChooseDishes_CheckIfSuccessMsgIsReturnedAfterSelectedDish_MsgWithDishNameAndPrice()
         {
+            // Arrange
             var testConsole = new TestConsole();
             var mainApp = new MainApp(testConsole);
-            //act
+            // Act
             testConsole.ReadNumberResult = 1; //Dish menu
             testConsole.ReadStringResult = "Pasta";
             var result = mainApp.ChooseDishes();
-            //assert
+            // Assert
             Assert.AreEqual("Dish has been added. Dish: Pasta,   Price: 5eur", testConsole.WriteStringResult);
         }
 
@@ -168,8 +167,9 @@ namespace NewRestoranoSistema.Tests
                     NumberOfSeats = 2,
                 }
             };
-
+            // Act
             var result = mainApp.UncheckTheUnavailableTable();
+            // Assert
             Assert.AreEqual("available", result);
         }
     

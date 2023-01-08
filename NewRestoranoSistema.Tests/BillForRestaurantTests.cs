@@ -39,9 +39,9 @@ namespace NewRestoranoSistema.Tests
                 },
                 BillData = DateTime.Now,
             };
-            //act
+            // Act
             var result = restaurantBill.PrintBill();
-            //Assert
+            // Assert
             Assert.AreEqual("Payment is successful", result);
         }
        
@@ -69,9 +69,9 @@ namespace NewRestoranoSistema.Tests
                 BillData = DateTime.Now,
                 _invoice = "E00088",
             };
-            //act
+            // Act
             var result = restaurantBill.Save();
-            //Assert
+            // Assert
             Assert.AreEqual("Saved in file", result);
         }
             
@@ -101,9 +101,9 @@ namespace NewRestoranoSistema.Tests
                 _invoice = "E00088",
             };
             testConsole.ReadStringResult = "vardas.gmail.com";
-            //act
+            // Act
             var result = restaurantBill.SendEmail();
-            //Assert
+            // Assert
             Assert.AreEqual("Subject: Restaurant Bill\n Email has been successfully sent to: vardas.gmail.com", result);
         }
        
@@ -138,7 +138,7 @@ namespace NewRestoranoSistema.Tests
             }
             public void WriteLine(string value)
             {
-                WriteStringResult = value; // tuscias veikia, jei nesvarbu ka consolei
+                WriteStringResult = value; // tuscias veikia, jeigu nesvarbu ka spausdina console
             }
             public void WriteNumber(int value)
             {
@@ -146,6 +146,4 @@ namespace NewRestoranoSistema.Tests
             }
         }
     }
-
-
 }

@@ -10,15 +10,8 @@ namespace NewRestoranoSistema
 {
     public class Order
     {
-        private readonly IConsole _console;
         public DateTime OrderDate { get; set; }
         public Table Table { get; set; }
         public List<Menu> MenuItemWithPrice { get; set; } = new List<Menu>();
-       
-
-        
-
-          
-
     }
 }

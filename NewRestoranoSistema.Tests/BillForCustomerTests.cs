@@ -37,9 +37,9 @@ namespace NewRestoranoSistema.Tests
                 },
                 BillData = DateTime.Now,
             };
-            //act
+            // Act
             var result = customerBill.PrintBill();
-            //Assert
+            // Assert
             Assert.AreEqual("Thank you, have a nice day.", result);
         }
         [TestMethod]
@@ -66,9 +66,9 @@ namespace NewRestoranoSistema.Tests
                 BillData = DateTime.Now,
             };
             testConsole.ReadStringResult = "vardas.gmail.com";
-            //act
+            // Act
             var result = customerBill.SendEmail();
-            //Assert
+            // Assert
             Assert.AreEqual("Email has been successfully sent to: vardas.gmail.com", result);
         }
     }
@@ -81,15 +81,11 @@ namespace NewRestoranoSistema.Tests
         public int ReadNumberResult { get; set; }
         public string WriteStringResult { get; set; }
         public int WriteNumberResult { get; set; }
-
         public List<string> ReadStringsList { get; set; } = new List<string>();
-
         public List<int> ReadNumbersList { get; set; } = new List<int>();
-      
-
         public string ReadString()
         {
-            if (ReadStringResult != null) // is not null buvo// kad veiktu pres tai testai
+            if (ReadStringResult != null) // kad veiktu pres tai testai
             {
                 return ReadStringResult;
             }
@@ -104,12 +100,10 @@ namespace NewRestoranoSistema.Tests
             }
             _numberCounter++;
             return ReadNumbersList[_numberCounter];
-
         }
         public void WriteLine(string value)
         {
-            WriteStringResult = value; // tuscias veikia, jei nesvarbu ka consolei
-                                       //Output.Add(value);
+            WriteStringResult = value; // tuscias veikia
         }
         public void WriteNumber(int value)
         {

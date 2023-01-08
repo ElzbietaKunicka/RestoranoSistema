@@ -2,17 +2,17 @@
     {
         "WaiterId": 1,
         "Password": "one",
-        "Name": "admin"
+        "Name": "July"
     },
     {
         "WaiterId": 2,
         "Password": "two",
-        "Name": "admin"
+        "Name": "Tom"
     },
     {
         "WaiterId": 3,
         "Password": "three",
-        "Name": "admin"
+        "Name": "Joe"
 
     }
 

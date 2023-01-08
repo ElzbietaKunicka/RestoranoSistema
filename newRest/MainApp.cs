@@ -20,7 +20,6 @@ namespace NewRestoranoSistema
         private readonly List<Menu> _listOfDrinks;
         private readonly List<Waiter> _listOfWaiters; // = new List<Waiter>();
         private readonly IConsole _console;
-       
         public Waiter _currentLoggedInWaiter;
         public List<Menu> OrderInfo { get; set; }
         public Table TableInfo { get; set; }
@@ -34,7 +33,6 @@ namespace NewRestoranoSistema
             _listOfDrinks = ReadMenuData("./Drinks.json");
             _listOfWaiters = ReadWaitersData("./Waiters.json");
         }
-
         static List<Waiter> ReadWaitersData(string path)
         {
             string fileContent = File.ReadAllText(path);
@@ -53,7 +51,6 @@ namespace NewRestoranoSistema
             var dishesList = JsonSerializer.Deserialize<List<Menu>>(fileContent);
             return dishesList;
         }
-
         public bool Login()
         {
             _console.WriteLine("Please enter ID");
@@ -96,24 +93,23 @@ namespace NewRestoranoSistema
                 }
             }
         }
-        // metodas turi leisti issirinkti staliuka ir ji grazinti. patiekalu uzsakymo ir kitu dalyku cia neturetu vykti
         public Table ChooseTable()
         {
             _console.WriteLine("Please enter number of guests!");
             var numberOfGuests = _console.ReadNumber();
             var availableTableList = _listOftable.Where(table => table.TableState == "available").ToList();
-            var tinkamasStaliukas = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).ToList();
-            var tinkamasStaliukasID = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).Select(table => table.TableId).ToList();
-            if (tinkamasStaliukasID.Count == 0)
+            var theRightSizeTables = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).ToList();
+            var theRightSizeTablesID = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).Select(table => table.TableId).ToList();
+            if (theRightSizeTablesID.Count == 0)
             {
                 var availableTable = new Table();
                 _console.WriteLine($"Sorry, we don't currently have any tables available for {numberOfGuests}");
                 return availableTable;
             }
                 _console.WriteLine("Please select table ID.");
-               tinkamasStaliukasID.ForEach(_console.WriteNumber);
+            theRightSizeTablesID.ForEach(_console.WriteNumber);
                 int userInputChoice =_console.ReadNumber();
-                var table = tinkamasStaliukas.SingleOrDefault(x => x.TableId == userInputChoice);
+                var table = theRightSizeTables.SingleOrDefault(x => x.TableId == userInputChoice);
             if (table == null)
             {
                 while (table == null)
@@ -121,7 +117,7 @@ namespace NewRestoranoSistema
                     _console.WriteLine("Wrong input");
                     _console.WriteLine("Please check your input and select table ID again.");
                     int newUserInputChoice = _console.ReadNumber();
-                    table = tinkamasStaliukas.SingleOrDefault(x => x.TableId == newUserInputChoice);
+                    table = theRightSizeTables.SingleOrDefault(x => x.TableId == newUserInputChoice);
                     if (table != null)
                     {
                         _console.WriteLine($"Table with ID - {newUserInputChoice} has been selected.");
@@ -130,7 +126,7 @@ namespace NewRestoranoSistema
                     }
                 }
             }
-            if(table != null && table.TableId == tinkamasStaliukasID.SingleOrDefault(tableId => tableId == userInputChoice))
+            if(table != null && table.TableId == theRightSizeTablesID.SingleOrDefault(tableId => tableId == userInputChoice))
             {
                 _console.WriteLine($"Table with ID - {userInputChoice} has been selected.");
                 table.TableState = "unavailable";
@@ -138,7 +134,6 @@ namespace NewRestoranoSistema
             }
             return table;
         }
-         
         public List<Menu> ChooseDishes()
         {
             while (true)
@@ -147,7 +142,6 @@ namespace NewRestoranoSistema
                 _console.WriteLine("1- dishes menu");
                 _console.WriteLine("2- drinks menu");
                 _console.WriteLine("3- Show order details");
-
                 var drinkList = new List<Menu>();
                 var dishesList = new List<Menu>();
                 var menuInputChoice = _console.ReadNumber();
@@ -160,7 +154,6 @@ namespace NewRestoranoSistema
                         dishesNames.ForEach(_console.WriteLine);
                         var inputDish = _console.ReadString();
                         var dish = _listOfDishes.SingleOrDefault(dish => dish.Name == inputDish);
-                        //dishesList.Add(dish);
                         while (true)
                         {
                             if (dish == null)
@@ -188,7 +181,6 @@ namespace NewRestoranoSistema
                         drinksNames.ForEach(_console.WriteLine);
                         var inputDrinkName = _console.ReadString();
                         var drink = _listOfDrinks.SingleOrDefault(drink => drink.Name == inputDrinkName);
-                        //drinkList.Add(drink);
                         while (true)
                         {
                             if (drink == null)
