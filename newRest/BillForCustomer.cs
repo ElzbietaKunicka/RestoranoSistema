@@ -22,13 +22,14 @@ namespace NewRestoranoSistema
             var counter = 1;
             var total = BillOrderInfo.Select(item => item.Price).Sum();
             _console.WriteLine($"\nOrder date: \t {BillData}");
-            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.");
             _console.WriteLine($"Order item:");
             foreach (var item in BillOrderInfo)
             {
                 _console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
             }
             _console.WriteLine($"The order total amount = {total}Eur.");
+            _console.WriteLine($"\nEmail has been successfully sent to: {recipientEmail}");
             return $"...Email has been successfully sent to: {recipientEmail}";
         }
     }

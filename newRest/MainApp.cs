@@ -51,7 +51,6 @@ namespace NewRestoranoSistema
         {
             string fileContent = File.ReadAllText(path);
             var dishesList = JsonSerializer.Deserialize<List<Menu>>(fileContent);
-            
             return dishesList;
         }
 
@@ -105,7 +104,6 @@ namespace NewRestoranoSistema
             var availableTableList = _listOftable.Where(table => table.TableState == "available").ToList();
             var tinkamasStaliukas = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).ToList();
             var tinkamasStaliukasID = availableTableList.Where(seat => seat.NumberOfSeats >= numberOfGuests).Select(table => table.TableId).ToList();
-            
             if (tinkamasStaliukasID.Count == 0)
             {
                 var availableTable = new Table();
@@ -141,12 +139,10 @@ namespace NewRestoranoSistema
                 return table;
             }
             return table;
-                
         }
          
         public List<Menu> ChooseDishes()
         {
-
             //var listOfDishes = ReadMenuData("./Dishes.json");
             while (true)
             {
@@ -299,11 +295,76 @@ namespace NewRestoranoSistema
         public string CheckUnavailableTable()
         {
            TableInfo.TableState = "available";
-           return TableInfo.TableState = $"\n...Table ID - {TableInfo.TableId} is available!!!";
+           return TableInfo.TableState = $"\n...Table ID - {TableInfo.TableId} is available!!!\n";
         }
 
-        
-        
+        public int SelectCommandToSendEmailsOrNo()
+        {
+            _console.WriteLine("Would you like to send a Billcopy? \n 1.Yes, I would. \n 2.NO");
+            var output = _console.ReadNumber();
+            if (output != 1 && output != 2)
+            {
+                _console.WriteLine("Wrong input, try again");
+                output = _console.ReadNumber();
+                if (output == 1)
+                {
+                    return output;
+                }
+                if (output == 2)
+                {
+                    return output;
+                }
+            }
+            if (output == 1)
+            {
+                return output;
+            }
+            if (output == 2)
+            {
+                return output;
+            }
+            return output;
+        }
+
+        public int SelectTheBIllYouWantToSend()
+        {
+            _console.WriteLine("Select command \n 1.Send the Restaurant bill. \n 2.Send the Customer Bill \n 3. Send copies of both bills");
+            var output = _console.ReadNumber();
+            if (output != 1 && output != 2 && output != 3)
+            {
+                _console.WriteLine("Wrong input, try again");
+                output = _console.ReadNumber();
+                if (output == 1)
+                {
+                    return output;
+                }
+                if (output == 2)
+                {
+                    return output;
+                }
+                if (output == 3)
+                {
+                    return output;
+                }
+            }
+            if (output == 1)
+            {
+                return output;
+            }
+            if (output == 2)
+            {
+                return output;
+            }
+            if (output == 3)
+            {
+                return output;
+            }
+            return output;
+        }
+
+
+
+
     }
 }
 

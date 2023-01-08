@@ -69,11 +69,25 @@ namespace NewRestoranoSistema
                                 mainApp.CheckUnavailableTable();
                                 var ta = mainApp.TableInfo.TableState;
                                 Console.WriteLine(ta);
-
-                                billForRestaurant.SendEmail();
-                                bill.SendEmail();
-                                //bill.SendEmail(bill);
-                               
+                                var returnOutputOrSendEmail = mainApp.SelectCommandToSendEmailsOrNo();
+                                if(returnOutputOrSendEmail == 1)
+                                {
+                                    var returnOutputHowBill = mainApp.SelectTheBIllYouWantToSend();
+                                    if(returnOutputHowBill == 1)
+                                    {
+                                        billForRestaurant.SendEmail();
+                                    }
+                                    if(returnOutputHowBill == 2)
+                                    {
+                                        bill.SendEmail();
+                                    }
+                                    if(returnOutputHowBill == 3)
+                                    {
+                                        billForRestaurant.SendEmail();
+                                        bill.SendEmail();
+                                    }
+                                    
+                                }
                                 
                                 return;
                             }

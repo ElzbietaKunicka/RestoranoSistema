@@ -21,14 +21,14 @@ namespace NewRestoranoSistema
         }
         public string PrintBill()
         {
-            _console.WriteLine("\nPrinting Bill For Restaurant:\n");
+            _console.WriteLine("\n\tPrinting Bill For Restaurant:\n");
             var items = BillOrderInfo;
             var counter = 1;
             var tableInfo = BillTableInfo;
             var total = items.Select(item => item.Price).Sum();
             _console.WriteLine($"Invoice:\t{GenerateInvoiceNumber()}.");
             _console.WriteLine($"Order date: \t {BillData}");
-            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.");
             _console.WriteLine($"Order item:");
             foreach (var item in items)
             {
@@ -37,7 +37,7 @@ namespace NewRestoranoSistema
             _console.WriteLine($"The order total amount = {total}Eur.");
             double vat = Convert.ToDouble(total) * 21 / 100;
             _console.WriteLine($"Vat: {vat}eur");
-            _console.WriteLine("Payment is successful");
+            _console.WriteLine("\tPayment is successful");
             return "Payment is successful\n";
         }
         
@@ -51,12 +51,12 @@ namespace NewRestoranoSistema
         }
         public string Save() 
         {
-            _console.WriteLine("...Bill information Save in file");
+            _console.WriteLine("...Data has been saved successfully");
             string json = JsonSerializer.Serialize(this);
             //File.WriteAllText("dataa.txt", json);
             File.AppendAllText("dataa.txt", json);
             
-            return "Save in file";
+            return "Saved in file";
         }
 
         public string SendEmail()
@@ -76,6 +76,7 @@ namespace NewRestoranoSistema
             _console.WriteLine($"The order total amount = {total}Eur.");
             double vat = Convert.ToDouble(total) * 21 / 100;
             _console.WriteLine($"Vat: {vat}eur");
+            _console.WriteLine($"\nEmail has been successfully sent to: {recipientEmail}");
 
             return $"Subject: Restaurant Bill\n \tEmail has been successfully sent to: {recipientEmail}";
         }
