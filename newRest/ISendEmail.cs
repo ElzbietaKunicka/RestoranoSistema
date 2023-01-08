@@ -9,6 +9,5 @@ namespace NewRestoranoSistema
     public interface ISendEmail
     {
         string SendEmail();
-        
     }
 }

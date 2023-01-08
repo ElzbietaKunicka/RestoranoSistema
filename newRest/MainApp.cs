@@ -253,22 +253,15 @@ namespace NewRestoranoSistema
             {
                 _console.WriteLine("Wrong input, try again");
                 output = _console.ReadNumber();
-                if (output == 1)
-                {
-                    return output;
-                }
-                if (output == 2)
+                
+                if (output == 1 || output == 2)
                 {
                     return output;
                 }
             }
-            if (output == 1)
+            if (output == 1 || output == 2)
             {
                return output;
-            }
-            if(output == 2)
-            {
-                return output;
             }
             return output;
         }
@@ -286,20 +279,12 @@ namespace NewRestoranoSistema
             {
                 _console.WriteLine("Wrong input, try again");
                 output = _console.ReadNumber();
-                if (output == 1)
-                {
-                    return output;
-                }
-                if (output == 2)
+                if (output == 1 || output == 2)
                 {
                     return output;
                 }
             }
-            if (output == 1)
-            {
-                return output;
-            }
-            if (output == 2)
+            if (output == 1 || output == 2)
             {
                 return output;
             }
@@ -313,36 +298,12 @@ namespace NewRestoranoSistema
             {
                 _console.WriteLine("Wrong input, try again");
                 output = _console.ReadNumber();
-                if (output == 1)
-                {
-                    return output;
-                }
-                if (output == 2)
-                {
-                    return output;
-                }
-                if (output == 3)
-                {
-                    return output;
-                }
-                if (output == 4)
+                if (output == 1 || output == 2 || output == 3 || output == 4)
                 {
                     return output;
                 }
             }
-            if (output == 1)
-            {
-                return output;
-            }
-            if (output == 2)
-            {
-                return output;
-            }
-            if (output == 3)
-            {
-                return output;
-            }
-            if (output == 4)
+            if (output == 1 || output == 2 || output == 3 || output == 4)
             {
                 return output;
             }
