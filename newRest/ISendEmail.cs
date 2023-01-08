@@ -8,11 +8,6 @@ namespace NewRestoranoSistema
 {
     public interface ISendEmail
     {
-        
-        //string SenderName { get { return "RestaurantCity"; } set {  } }
-        //public string SenderEmail { get { return "sdfg.mail.com"; } set { } }
-     
-
         string SendEmail();
         
     }

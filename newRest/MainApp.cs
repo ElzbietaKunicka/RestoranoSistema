@@ -18,7 +18,7 @@ namespace NewRestoranoSistema
         private readonly List<Table> _listOftable;
         private readonly List<Menu> _listOfDishes;
         private readonly List<Menu> _listOfDrinks;
-        private readonly List<Waiter> _listOfWaiters = new List<Waiter>();
+        private readonly List<Waiter> _listOfWaiters; // = new List<Waiter>();
         private readonly IConsole _console;
        
         public Waiter _currentLoggedInWaiter;
@@ -116,7 +116,6 @@ namespace NewRestoranoSistema
                 var table = tinkamasStaliukas.SingleOrDefault(x => x.TableId == userInputChoice);
             if (table == null)
             {
-                //_console.WriteLine("Wrong input");
                 while (table == null)
                 {
                     _console.WriteLine("Wrong input");
@@ -130,7 +129,6 @@ namespace NewRestoranoSistema
                         return table;
                     }
                 }
-                //return table;
             }
             if(table != null && table.TableId == tinkamasStaliukasID.SingleOrDefault(tableId => tableId == userInputChoice))
             {
@@ -143,29 +141,25 @@ namespace NewRestoranoSistema
          
         public List<Menu> ChooseDishes()
         {
-            //var listOfDishes = ReadMenuData("./Dishes.json");
             while (true)
             {
                 _console.WriteLine("Select the menu of dishes or Drinks");
                 _console.WriteLine("1- dishes menu");
                 _console.WriteLine("2- drinks menu");
-                _console.WriteLine("3- See order details");
+                _console.WriteLine("3- Show order details");
 
                 var drinkList = new List<Menu>();
                 var dishesList = new List<Menu>();
-
                 var menuInputChoice = _console.ReadNumber();
                 
                 switch (menuInputChoice)
                 {
                     case 1:
-                        //var dishesList = new List<Menu>();
                         var dishesNames = _listOfDishes.Select(dishes => dishes.Name).ToList();
                         _console.WriteLine("Please select dish");
                         dishesNames.ForEach(_console.WriteLine);
                         var inputDish = _console.ReadString();
                         var dish = _listOfDishes.SingleOrDefault(dish => dish.Name == inputDish);
-
                         //dishesList.Add(dish);
                         while (true)
                         {
@@ -181,7 +175,6 @@ namespace NewRestoranoSistema
                             }
                             if (dish != null)
                             {
-                                //var dish = _listOfDishes.SingleOrDefault(x => x.Name == inputDishes);
                                 _console.WriteLine($"Dish has been added. Dish: {dish.Name},   Price: {dish.Price}eur");
                                 dishesList.Add(dish);
                                 return dishesList;
@@ -190,7 +183,6 @@ namespace NewRestoranoSistema
                         break;
                        
                     case 2:
-                        //var drinkList = new List<Menu>();
                          var drinksNames = _listOfDrinks.Select(drink => drink.Name).ToList();
                         _console.WriteLine("Please select drink");
                         drinksNames.ForEach(_console.WriteLine);
@@ -208,11 +200,9 @@ namespace NewRestoranoSistema
                                     var newInputDrinkName = (_console.ReadString());
                                     drink = _listOfDrinks.SingleOrDefault(drink => drink.Name == newInputDrinkName);
                                 }
-                               
                             }
                             if (drink != null)
                             {
-                                //var dish = _listOfDishes.Single(x => x.Name == inputDishes);
                                 _console.WriteLine($"Drink has been added. Drink: {drink.Name},   Price: {drink.Price}eur");
                                 drinkList.Add(drink);
                                 return drinkList;
@@ -249,7 +239,6 @@ namespace NewRestoranoSistema
         public int SelectCommandReturnToTheMenuOrToPay()
         {
             _console.WriteLine("Please select command: \n 1 - Back to the main menu \n 2 - To pay.");
-           
             var output = _console.ReadNumber();
             if (output == 1)
             {
@@ -291,16 +280,15 @@ namespace NewRestoranoSistema
             }
             return output;
         }
-
-        public string CheckUnavailableTable()
+        public string UncheckTheUnavailableTable()
         {
            TableInfo.TableState = "available";
-           return TableInfo.TableState = $"\n...Table ID - {TableInfo.TableId} is available!!!\n";
+            _console.WriteLine($"Table ID - {TableInfo.TableId} is available!!!\n");
+           return "available";
         }
-
         public int SelectCommandToSendEmailsOrNo()
         {
-            _console.WriteLine("Would you like to send a Billcopy? \n 1.Yes, I would. \n 2.NO");
+            _console.WriteLine("Would you like to send a Billcopy? \n 1.YES \n 2.NO");
             var output = _console.ReadNumber();
             if (output != 1 && output != 2)
             {
@@ -325,12 +313,11 @@ namespace NewRestoranoSistema
             }
             return output;
         }
-
-        public int SelectTheBIllYouWantToSend()
+        public int SelectTheBIllThatYouWantToSend()
         {
-            _console.WriteLine("Select command \n 1.Send the Restaurant bill. \n 2.Send the Customer Bill \n 3. Send copies of both bills");
+            _console.WriteLine("Select command \n 1.Send the Restaurant bill. \n 2.Send the Customer Bill \n 3.Send copies of both bills \n 4. Return");
             var output = _console.ReadNumber();
-            if (output != 1 && output != 2 && output != 3)
+            if (output != 1 && output != 2 && output != 3 && output != 4)
             {
                 _console.WriteLine("Wrong input, try again");
                 output = _console.ReadNumber();
@@ -343,6 +330,10 @@ namespace NewRestoranoSistema
                     return output;
                 }
                 if (output == 3)
+                {
+                    return output;
+                }
+                if (output == 4)
                 {
                     return output;
                 }
@@ -359,12 +350,12 @@ namespace NewRestoranoSistema
             {
                 return output;
             }
+            if (output == 4)
+            {
+                return output;
+            }
             return output;
         }
-
-
-
-
     }
 }
 

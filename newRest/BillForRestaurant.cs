@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace NewRestoranoSistema
 {
-    public class BillForRestaurant : BillAbstract, ISendEmail
+    public class BillForRestaurant : Bill, ISendEmail
     {
         private readonly IConsole _console;
-        public string SenderName = "RestaurantCity";
-        public string RecipientEmail { get; set; }
+        
         public string _invoice { get; set; }
       
         public BillForRestaurant(IConsole console)
@@ -21,12 +20,13 @@ namespace NewRestoranoSistema
         }
         public string PrintBill()
         {
-            _console.WriteLine("\n\tPrinting Bill For Restaurant:\n");
+            _console.WriteLine("\nPrinting Bill For Restaurant:");
+            _console.WriteLine("_____________________________________");
             var items = BillOrderInfo;
             var counter = 1;
             var tableInfo = BillTableInfo;
             var total = items.Select(item => item.Price).Sum();
-            _console.WriteLine($"Invoice:\t{GenerateInvoiceNumber()}.");
+            _console.WriteLine($"\nInvoice:\t{GenerateInvoiceNumber()} ");
             _console.WriteLine($"Order date: \t {BillData}");
             _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.");
             _console.WriteLine($"Order item:");
@@ -37,8 +37,10 @@ namespace NewRestoranoSistema
             _console.WriteLine($"The order total amount = {total}Eur.");
             double vat = Convert.ToDouble(total) * 21 / 100;
             _console.WriteLine($"Vat: {vat}eur");
-            _console.WriteLine("\tPayment is successful");
-            return "Payment is successful\n";
+            _console.WriteLine("  ***Payment is successful***");
+            
+            _console.WriteLine("_____________________________________");
+            return "Payment is successful";
         }
         
         public string GenerateInvoiceNumber()
@@ -51,23 +53,21 @@ namespace NewRestoranoSistema
         }
         public string Save() 
         {
-            _console.WriteLine("...Data has been saved successfully");
+            _console.WriteLine("\nData has been saved successfully");
             string json = JsonSerializer.Serialize(this);
-            //File.WriteAllText("dataa.txt", json);
             File.AppendAllText("dataa.txt", json);
-            
             return "Saved in file";
         }
 
         public string SendEmail()
         {
-            _console.WriteLine("\nPlease enter email to send Restaurant Bill");
+            _console.WriteLine("\nPlease enter email (Restaurant Bill)");
             var recipientEmail = _console.ReadString();
             var counter = 1;
             var total = BillOrderInfo.Select(item => item.Price).Sum();
             _console.WriteLine($"\nInvoice:\t{GenerateInvoiceNumber()}.");
             _console.WriteLine($"Order date: \t {BillData}");
-            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.\n");
+            _console.WriteLine($"Table ID: {BillTableInfo.TableId},\nNumberOfSeats: {BillTableInfo.NumberOfSeats}.");
             _console.WriteLine($"Order item:");
             foreach (var item in BillOrderInfo)
             {
@@ -76,9 +76,8 @@ namespace NewRestoranoSistema
             _console.WriteLine($"The order total amount = {total}Eur.");
             double vat = Convert.ToDouble(total) * 21 / 100;
             _console.WriteLine($"Vat: {vat}eur");
-            _console.WriteLine($"\nEmail has been successfully sent to: {recipientEmail}");
-
-            return $"Subject: Restaurant Bill\n \tEmail has been successfully sent to: {recipientEmail}";
+            _console.WriteLine($"\n***Email has been successfully sent to: {recipientEmail}***");
+            return $"Subject: Restaurant Bill\n Email has been successfully sent to: {recipientEmail}";
         }
     }
 }

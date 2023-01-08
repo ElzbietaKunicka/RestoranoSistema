@@ -10,7 +10,6 @@ namespace NewRestoranoSistema
     {
         public void WriteLine(string value);
         public void WriteNumber(int value);
-
         public string ReadString();
         public int ReadNumber();
     }

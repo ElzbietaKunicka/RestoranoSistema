@@ -11,13 +11,5 @@ namespace NewRestoranoSistema
         public int TableId { get; set; }
         public int NumberOfSeats { get; set; }
         public string TableState { get; set; }
-
-       
-
-        //public Table(int tableId, int numberOfSeats)
-        //{
-        //    TableId = tableId;
-        //    NumberOfSeats = numberOfSeats;
-        //}
     }
 }

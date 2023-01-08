@@ -28,7 +28,5 @@ namespace NewRestoranoSistema
         public void WriteLine(string value) => Console.WriteLine(value);
 
         public void WriteNumber(int value) => Console.WriteLine(value);
-
-        //public void WriteLine1(int value) => Console.WriteLine(value);
     }
 }

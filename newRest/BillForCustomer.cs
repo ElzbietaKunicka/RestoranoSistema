@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace NewRestoranoSistema
 {
-    public class BillForCustomer : BillAbstract, ISendEmail
+    public class BillForCustomer : Bill, ISendEmail
     {
-        
-        public string SenderName = "RestaurantCity";
         public BillForCustomer(IConsole console)
         {
             _console = console;
@@ -29,9 +27,8 @@ namespace NewRestoranoSistema
                 _console.WriteLine($"\t{counter++}.{item.Name}\t{item.Price}eur.");
             }
             _console.WriteLine($"The order total amount = {total}Eur.");
-            _console.WriteLine($"\nEmail has been successfully sent to: {recipientEmail}");
-            return $"...Email has been successfully sent to: {recipientEmail}";
+            _console.WriteLine($"\n***Email has been successfully sent to: {recipientEmail}***");
+            return $"Email has been successfully sent to: {recipientEmail}";
         }
     }
-    
 }
